@@ -14,7 +14,7 @@ def connect_to_server():
     while True:
         try:
             client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-            client.connect(('localhost', 8080)) # ---- Підключення до сервера
+            client.connect(('192.168.1.110', 8080)) # ---- Підключення до сервера
             buffer = ""
             game_state = {}
             my_id = int(client.recv(24).decode())
@@ -43,7 +43,12 @@ font_main = font.Font(None, 36)
 # --- ЗОБРАЖЕННЯ ----
 
 # --- ЗВУКИ ---
+mixer.init()
+mixer.music.load('')
+mixer.music.play()
 
+kick_platform = mixer.Sound('')
+kick_wall = mixer.Sound('')
 # --- ГРА ---
 game_over = False
 winner = None
