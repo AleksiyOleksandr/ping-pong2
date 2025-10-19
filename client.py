@@ -14,7 +14,7 @@ def connect_to_server():
     while True:
         try:
             client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-            client.connect(('192.168.1.110', 8080)) # ---- Підключення до сервера
+            client.connect(('localhost', 8080)) # ---- Підключення до сервера
             buffer = ""
             game_state = {}
             my_id = int(client.recv(24).decode())
@@ -41,14 +41,14 @@ def receive():
 font_win = font.Font(None, 72)
 font_main = font.Font(None, 36)
 # --- ЗОБРАЖЕННЯ ----
-
+bg = transform.scale(image.load("bg.jpg"), (WIDTH, HEIGHT))
 # --- ЗВУКИ ---
 mixer.init()
-mixer.music.load('')
-mixer.music.play()
+'''mixer.music.load('')
+mixer.music.play()'''
 
-kick_platform = mixer.Sound('')
-kick_wall = mixer.Sound('')
+kick_platform = mixer.Sound('tenis_ball.mp3')
+kick_wall = mixer.Sound('tenis_ball.mp3')
 # --- ГРА ---
 game_over = False
 winner = None
@@ -93,7 +93,8 @@ while True:
         continue  # Блокує гру після перемоги
 
     if game_state:
-        screen.fill((30, 30, 30))
+        screen.blit(bg, (0,0))
+        #screen.fill((30, 30, 30))
         draw.rect(screen, (0, 255, 0), (20, game_state['paddles']['0'], 20, 100))
         draw.rect(screen, (255, 0, 255), (WIDTH - 40, game_state['paddles']['1'], 20, 100))
         draw.circle(screen, (255, 255, 255), (game_state['ball']['x'], game_state['ball']['y']), 10)
@@ -102,11 +103,11 @@ while True:
 
         if game_state['sound_event']:
             if game_state['sound_event'] == 'wall_hit':
-                # звук відбиття м'ячика від стін
-                pass
+                kick_wall.play()
+
             if game_state['sound_event'] == 'platform_hit':
-                # звук відбиття м'ячика від платформи
-                pass
+                kick_platform.play()
+
 
     else:
         wating_text = font_main.render(f"Очікування гравців...", True, (255, 255, 255))
